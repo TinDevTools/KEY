@@ -298,15 +298,15 @@
         </div>
 
         <div class="key-section">
-            <div class="key-label">🔑 KEY TOOL:</div>
+            <div class="key-label">KEY TOOL:</div>
             <div class="key-box" id="keyDisplay">Đang tải...</div>
             <button class="copy-btn" id="copyKeyBtn">
-                📋 Sao chép KEY
+                Sao chép KEY
             </button>
         </div>
     </div>
 
-    <div id="toastMsg" class="toast-msg">✅ Đã sao chép key!</div>
+    <div id="toastMsg" class="toast-msg">Đã sao chép key!</div>
 
     <script>
         // Xử lý video autoplay
@@ -338,7 +338,7 @@
             keyDisplay.style.color = "#0f3b7a";
             keyDisplay.style.fontWeight = "700";
         } else {
-            keyDisplay.textContent = "🔒 Chưa có key → thêm ?key=你的key vào URL";
+            keyDisplay.textContent = "Chưa có key → thêm ?key=你的key vào URL";
             keyDisplay.style.color = "#94a3b8";
             keyDisplay.style.fontWeight = "500";
         }
@@ -346,18 +346,18 @@
         // Copy key
         copyBtn.addEventListener('click', () => {
             if (!currentKey || currentKey.trim() === "") {
-                toastMsg.textContent = "⚠️ Không có key để sao chép!";
+                toastMsg.textContent = "Không có key để sao chép!";
                 toastMsg.style.opacity = "1";
                 setTimeout(() => { toastMsg.style.opacity = "0"; }, 2000);
                 return;
             }
             
             navigator.clipboard.writeText(currentKey.trim()).then(() => {
-                toastMsg.textContent = `✅ Đã sao chép: ${currentKey.trim()}`;
+                toastMsg.textContent = `Đã sao chép: ${currentKey.trim()}`;
                 toastMsg.style.opacity = "1";
                 setTimeout(() => { toastMsg.style.opacity = "0"; }, 2000);
             }).catch(() => {
-                toastMsg.textContent = "❌ Sao chép thất bại, thử lại!";
+                toastMsg.textContent = "Sao chép thất bại, thử lại!";
                 toastMsg.style.opacity = "1";
                 setTimeout(() => { toastMsg.style.opacity = "0"; }, 2000);
             });
