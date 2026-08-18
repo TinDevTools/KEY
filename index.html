@@ -3,365 +3,473 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>AU TOOL - Video Background</title>
+    <title>Key Display</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        /* Video nền full màn hình */
-        .bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-        }
-
-        /* Lớp phủ tối nhẹ */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.45);
-            z-index: 1;
-        }
-
-        /* Bảng trắng giữa màn hình */
-        .card {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 650px;
-            max-width: 92%;
-            background-color: rgba(255, 255, 255, 0.98);
-            border-radius: 64px;
-            padding: 48px 36px 52px 36px;
-            text-align: center;
-            box-shadow: 0 40px 70px rgba(0, 0, 0, 0.4);
-            z-index: 2;
-            border: 2px solid rgba(255,255,255,0.7);
-            backdrop-filter: blur(2px);
-        }
-
-        /* Avatar */
-        .avatar {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid white;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-            margin-bottom: 24px;
-            background-color: #eef2ff;
-        }
-
-        /* Tên và tick */
-        .name-row {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #e5e5e5;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            overflow: hidden;
         }
 
-        .name {
-            font-size: 52px;
-            font-weight: 800;
-            color: #0f172a;
-            letter-spacing: -0.5px;
-        }
-
-        .verified-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #1D9BF0;
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(29, 155, 240, 0.5);
-        }
-
-        .verified-icon svg {
-            width: 26px;
-            height: 26px;
-            fill: white;
-            display: block;
-        }
-
-        /* Giới thiệu */
-        .intro-text {
-            font-size: 20px;
-            line-height: 1.6;
-            color: #1e2a3e;
-            text-align: center;
-            margin-top: 8px;
-            padding: 20px 12px 8px 12px;
-            border-top: 2px solid #e2e8f0;
-            font-weight: 500;
-        }
-
-        .intro-text strong {
-            font-weight: 900;
-            color: #0f3b7a;
-            font-weight: 900;
-            font-size: 22px;
-        }
-
-        /* KEY TOOL */
-        .key-section {
-            margin-top: 32px;
-            text-align: center;
-        }
-
-        .key-label {
-            font-size: 24px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .key-box {
-            background: #f1f5f9;
-            border: 2px solid #cbd5e1;
-            border-radius: 20px;
-            padding: 18px 22px;
-            font-size: 20px;
-            font-weight: 700;
-            font-family: 'Courier New', 'Fira Code', monospace;
-            color: #0f3b7a;
-            text-align: center;
-            word-break: break-all;
-            letter-spacing: 0.5px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .copy-btn {
-            margin-top: 18px;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: none;
-            border-radius: 50px;
-            padding: 12px 32px;
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .copy-btn:hover {
-            background: linear-gradient(135deg, #0f172a, #020617);
-            transform: scale(1.02);
-        }
-
-        .copy-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Toast message */
-        .toast-msg {
+        /* Video Background */
+        .video-bg {
             position: fixed;
-            bottom: 35px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #1e293b;
-            color: white;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 500;
-            z-index: 100;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .video-bg video {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* Overlay */
+        .video-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.55) 100%);
+            z-index: 1;
+        }
+
+        /* Noise */
+        .noise {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 2;
+            opacity: 0.04;
+            mix-blend-mode: overlay;
             pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 128px 128px;
+        }
+
+        /* Tech grid */
+        .tech-grid {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 3;
+            pointer-events: none;
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+        }
+
+        /* Spotlight */
+        .spotlight-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 4;
+            pointer-events: none;
+        }
+        .spotlight {
+            position: absolute;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+
+        /* White glass card */
+        .key-card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(30px) saturate(1.3);
+            -webkit-backdrop-filter: blur(30px) saturate(1.3);
+            border: 1px solid rgba(255,255,255,0.13);
+            border-radius: 20px;
+            box-shadow:
+                0 8px 60px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.12),
+                inset 0 -1px 0 rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+        }
+        .key-card:hover {
+            border-color: rgba(255,255,255,0.2);
+            box-shadow:
+                0 8px 60px rgba(0,0,0,0.4),
+                0 0 50px rgba(255,255,255,0.03),
+                inset 0 1px 0 rgba(255,255,255,0.12);
+        }
+
+        /* Key display box */
+        .key-display {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .key-display::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
+            transition: left 0.5s ease;
+        }
+        .key-display:hover::before { left: 100%; }
+        .key-display:hover {
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.35);
+        }
+        .key-display:active { transform: scale(0.985); }
+        .key-display.copied {
+            border-color: rgba(0,255,196,0.4);
+            background: rgba(0,255,196,0.06);
+        }
+        .key-display.no-key {
+            cursor: default;
+        }
+        .key-display.no-key:hover::before { left: -100%; }
+        .key-display.no-key:hover {
+            border-color: rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.3);
+        }
+
+        /* Scanline */
+        @keyframes scanline {
+            0% { top: -2px; }
+            100% { top: 100%; }
+        }
+        .key-display.scanning::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00ffc4, transparent);
+            animation: scanline 0.8s ease-out forwards;
+            z-index: 2;
+        }
+
+        /* Pulse dot */
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 6px #00ffc4; }
+            50% { opacity: 0.4; box-shadow: 0 0 2px #00ffc4; }
+        }
+        .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+        /* Loading spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top-color: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 100px;
+            padding: 0.6rem 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             opacity: 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-            max-width: 90vw;
-            white-space: normal;
-            text-align: center;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 100;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
-        @media (max-width: 680px) {
-            .card {
-                width: 520px;
-                padding: 40px 28px 44px;
-            }
-            .avatar {
-                width: 130px;
-                height: 130px;
-            }
-            .name {
-                font-size: 42px;
-            }
-            .verified-icon {
-                width: 38px;
-                height: 38px;
-            }
-            .verified-icon svg {
-                width: 22px;
-                height: 22px;
-            }
-            .intro-text {
-                font-size: 18px;
-            }
-            .intro-text strong {
-                font-size: 20px;
-            }
-            .key-label {
-                font-size: 22px;
-            }
-            .key-box {
-                font-size: 17px;
-                padding: 14px 18px;
-            }
-            .copy-btn {
-                font-size: 16px;
-                padding: 10px 26px;
-            }
+        /* Entrance */
+        @keyframes cardIn {
+            0% { opacity: 0; transform: translateY(24px) scale(0.96); filter: blur(12px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
+        .card-in { animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
-        @media (max-width: 550px) {
-            .card {
-                width: 90%;
-                padding: 32px 22px 38px;
-            }
-            .avatar {
-                width: 110px;
-                height: 110px;
-            }
-            .name {
-                font-size: 34px;
-            }
-            .verified-icon {
-                width: 32px;
-                height: 32px;
-            }
-            .intro-text {
-                font-size: 16px;
-            }
-            .intro-text strong {
-                font-size: 18px;
-            }
-            .key-label {
-                font-size: 20px;
-            }
-            .key-box {
-                font-size: 14px;
-            }
+        /* Glow ring */
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.25; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.05); }
+        }
+        .glow-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 120%; height: 120%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: glowPulse 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 9;
         }
     </style>
 </head>
 <body>
 
-    <video class="bg-video" autoplay loop muted playsinline>
-        <source src="https://www.image2url.com/r2/default/videos/1778422330859-e1aae6af-ec0f-41a9-956b-8f51bc924e34.mp4" type="video/mp4">
-    </video>
+    <!-- Video Background -->
+    <div class="video-bg">
+        <video autoplay muted loop playsinline>
+            <source src="https://videotourl.com/videos/1787016473357-9c6b84e2-d7f9-431f-9794-cf7f11dd566e.mp4" type="video/mp4">
+        </video>
+    </div>
 
-    <div class="overlay"></div>
+    <!-- Overlay -->
+    <div class="video-overlay"></div>
 
-    <div class="card">
-        <img class="avatar" src="https://i.postimg.cc/J0hfqJkn/image.png" alt="Avatar" onerror="this.src='https://via.placeholder.com/160?text=AU'">
-        
-        <div class="name-row">
-            <span class="name">KHANH LOC</span>
-            <div class="verified-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="white"/>
-                </svg>
+    <!-- Tech Grid -->
+    <div class="tech-grid"></div>
+
+    <!-- Noise -->
+    <div class="noise"></div>
+
+    <!-- Spotlight -->
+    <div class="spotlight-container">
+        <div class="spotlight" id="spotlight"></div>
+    </div>
+
+    <!-- Glow ring -->
+    <div class="glow-ring"></div>
+
+    <!-- Key Card -->
+    <div class="key-card card-in w-full max-w-md mx-4 p-8">
+
+        <!-- Header -->
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center">
+                <iconify-icon icon="ph:key-fill" style="font-size: 16px; color: #00ffc4;"></iconify-icon>
+            </div>
+            <div>
+                <h3 class="text-white text-sm font-medium tracking-tight">License Key</h3>
+                <p class="text-white/35 text-[10px] font-medium uppercase tracking-widest">Click to copy</p>
+            </div>
+            <div class="ml-auto flex items-center gap-1.5" id="statusBadge">
+                <span class="w-1.5 h-1.5 rounded-full bg-yellow-400" style="box-shadow: 0 0 6px rgba(250,204,21,0.5);"></span>
+                <span class="text-[10px] text-white/45 font-medium">Loading</span>
             </div>
         </div>
 
-        <div class="intro-text">
-            Chào Bạn, Tôi là quản trị viên của <strong>AU TOOL</strong>, là một người thích lập trình, sở thích tìm hiểu mọi thứ chưa biết cho dù kiến thức là 0.
+        <!-- Divider -->
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-white/12 to-transparent mb-6"></div>
+
+        <!-- Label -->
+        <label class="block text-[10px] font-semibold uppercase tracking-[0.15em] text-white/35 mb-2.5 pl-1">Key</label>
+
+        <!-- Key Display -->
+        <div class="key-display no-key px-5 py-4 flex items-center gap-3" id="keyBox">
+            <div class="spinner flex-shrink-0" id="loadingSpinner"></div>
+            <span class="font-mono text-sm text-white/30 tracking-wide flex-1 break-all leading-relaxed" id="keyText">Đang tải...</span>
+            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-white/8 flex items-center justify-center transition-all" id="copyBtn" style="display:none;">
+                <iconify-icon icon="ph:copy" style="font-size: 14px; color: rgba(255,255,255,0.3);" id="copyIcon"></iconify-icon>
+            </div>
         </div>
 
-        <div class="key-section">
-            <div class="key-label">KEY TOOL:</div>
-            <div class="key-box" id="keyDisplay">Đang tải...</div>
-            <button class="copy-btn" id="copyKeyBtn">
-                Sao chép KEY
-            </button>
+        <!-- Hint -->
+        <p class="text-white/20 text-[10px] mt-3 pl-1 flex items-center gap-1.5" id="hintText">
+            <iconify-icon icon="ph:info" style="font-size: 11px;"></iconify-icon>
+            Đang kiểm tra key...
+        </p>
+
+        <!-- Bottom info -->
+        <div class="mt-6 pt-5 border-t border-white/8 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <iconify-icon icon="ph:shield-check-fill" style="font-size: 14px; color: #00ffc4;" id="shieldIcon"></iconify-icon>
+                <span class="text-[10px] text-white/35 font-medium" id="verifyText">Verifying...</span>
+            </div>
+            <span class="text-[10px] text-white/20 font-mono">v2.4.1</span>
         </div>
     </div>
 
-    <div id="toastMsg" class="toast-msg">Đã sao chép key!</div>
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <iconify-icon icon="ph:check-circle-fill" style="font-size: 16px; color: #00ffc4;" id="toastIcon"></iconify-icon>
+        <span class="text-xs text-white/75 font-medium" id="toastText">Đã sao chép!</span>
+    </div>
 
     <script>
-        // Xử lý video autoplay
-        const video = document.querySelector('.bg-video');
+        // Spotlight
+        const spotlight = document.getElementById('spotlight');
+        document.addEventListener('mousemove', (e) => {
+            spotlight.style.left = e.clientX + 'px';
+            spotlight.style.top = e.clientY + 'px';
+        });
+
+        // Elements
+        const keyBox = document.getElementById('keyBox');
+        const keyText = document.getElementById('keyText');
+        const copyBtn = document.getElementById('copyBtn');
+        const copyIcon = document.getElementById('copyIcon');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const statusBadge = document.getElementById('statusBadge');
+        const hintText = document.getElementById('hintText');
+        const verifyText = document.getElementById('verifyText');
+        const shieldIcon = document.getElementById('shieldIcon');
+        const toast = document.getElementById('toast');
+        const toastText = document.getElementById('toastText');
+        const toastIcon = document.getElementById('toastIcon');
+        let toastTimer;
+        let currentKey = '';
+
+        // Lấy key từ URL
+        function getKeyFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('key');
+        }
+
+        // Giả lập loading rồi hiện kết quả
+        function init() {
+            const key = getKeyFromURL();
+
+            setTimeout(() => {
+                if (key && key.trim() !== '') {
+                    currentKey = key.trim();
+
+                    // Ẩn spinner, hiện copy btn
+                    loadingSpinner.style.display = 'none';
+                    copyBtn.style.display = 'flex';
+
+                    // Hiện key
+                    keyText.textContent = currentKey;
+                    keyText.style.color = 'rgba(255,255,255,0.8)';
+
+                    // Bỏ class no-key, thêm onclick
+                    keyBox.classList.remove('no-key');
+                    keyBox.setAttribute('onclick', 'copyKey()');
+
+                    // Status → Active
+                    statusBadge.innerHTML = `
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#00ffc4] pulse-dot"></span>
+                        <span class="text-[10px] text-white/45 font-medium">Active</span>
+                    `;
+
+                    // Hint
+                    hintText.innerHTML = `
+                        <iconify-icon icon="ph:info" style="font-size: 11px;"></iconify-icon>
+                        Nhấn vào key để sao chép vào clipboard
+                    `;
+
+                    // Verify
+                    verifyText.textContent = 'Verified';
+                } else {
+                    // Không có key
+                    loadingSpinner.style.display = 'none';
+
+                    keyText.textContent = 'Thêm ?key=YOUR_KEY vào URL';
+                    keyText.style.color = 'rgba(255,255,255,0.2)';
+                    keyText.style.fontSize = '12px';
+
+                    statusBadge.innerHTML = `
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-400" style="box-shadow: 0 0 6px rgba(248,113,113,0.5);"></span>
+                        <span class="text-[10px] text-white/45 font-medium">No Key</span>
+                    `;
+
+                    hintText.innerHTML = `
+                        <iconify-icon icon="ph:warning" style="font-size: 11px; color: rgba(248,113,113,0.5);"></iconify-icon>
+                        <span style="color: rgba(248,113,113,0.4);">Không tìm thấy key trong URL</span>
+                    `;
+
+                    shieldIcon.style.color = 'rgba(248,113,113,0.5)';
+                    shieldIcon.setAttribute('icon', 'ph:shield-warning-fill');
+                    verifyText.textContent = 'Invalid';
+                }
+            }, 800);
+        }
+
+        function copyKey() {
+            if (!currentKey) return;
+
+            navigator.clipboard.writeText(currentKey).then(() => {
+                showCopied();
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = currentKey;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showCopied();
+            });
+        }
+
+        function showCopied() {
+            keyBox.classList.add('copied', 'scanning');
+            copyIcon.setAttribute('icon', 'ph:check');
+            copyIcon.style.color = '#00ffc4';
+            copyBtn.style.background = 'rgba(0,255,196,0.12)';
+
+            toastIcon.setAttribute('icon', 'ph:check-circle-fill');
+            toastIcon.style.color = '#00ffc4';
+            toastText.textContent = 'Đã sao chép key!';
+            toast.style.borderColor = 'rgba(0,255,196,0.2)';
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+
+            setTimeout(() => {
+                keyBox.classList.remove('copied', 'scanning');
+                copyIcon.setAttribute('icon', 'ph:copy');
+                copyIcon.style.color = 'rgba(255,255,255,0.3)';
+                copyBtn.style.background = 'rgba(255,255,255,0.08)';
+            }, 1500);
+        }
+
+        // Auto play video
+        const video = document.querySelector('.video-bg video');
         if (video) {
             video.play().catch(() => {
                 const playVideo = () => {
-                    video.play().catch(e => console.log("play error:", e));
+                    video.play().catch(() => {});
                     document.removeEventListener('click', playVideo);
                 };
                 document.addEventListener('click', playVideo);
             });
         }
 
-        // Lấy key từ URL (hỗ trợ ?key=xxx)
-        function getKeyFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('key');
-        }
-
-        const keyDisplay = document.getElementById('keyDisplay');
-        const copyBtn = document.getElementById('copyKeyBtn');
-        const toastMsg = document.getElementById('toastMsg');
-
-        const currentKey = getKeyFromURL();
-
-        if (currentKey && currentKey.trim() !== "") {
-            keyDisplay.textContent = currentKey.trim();
-            keyDisplay.style.color = "#0f3b7a";
-            keyDisplay.style.fontWeight = "700";
-        } else {
-            keyDisplay.textContent = "Chưa có key → thêm ?key=你的key vào URL";
-            keyDisplay.style.color = "#94a3b8";
-            keyDisplay.style.fontWeight = "500";
-        }
-
-        // Copy key
-        copyBtn.addEventListener('click', () => {
-            if (!currentKey || currentKey.trim() === "") {
-                toastMsg.textContent = "Không có key để sao chép!";
-                toastMsg.style.opacity = "1";
-                setTimeout(() => { toastMsg.style.opacity = "0"; }, 2000);
-                return;
-            }
-            
-            navigator.clipboard.writeText(currentKey.trim()).then(() => {
-                toastMsg.textContent = `Đã sao chép: ${currentKey.trim()}`;
-                toastMsg.style.opacity = "1";
-                setTimeout(() => { toastMsg.style.opacity = "0"; }, 2000);
-            }).catch(() => {
-                toastMsg.textContent = "Sao chép thất bại, thử lại!";
-                toastMsg.style.opacity = "1";
-                setTimeout(() => { toastMsg.style.opacity = "0"; }, 2000);
-            });
-        });
+        // Start
+        init();
     </script>
 </body>
 </html>
