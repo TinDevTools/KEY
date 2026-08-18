@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>Key Display</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <script>
         tailwind.config = {
             theme: {
@@ -32,7 +32,6 @@
             overflow: hidden;
         }
 
-        /* Video Background */
         .video-bg {
             position: fixed;
             top: 0; left: 0;
@@ -48,7 +47,6 @@
             object-fit: cover;
         }
 
-        /* Overlay */
         .video-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -57,7 +55,6 @@
             z-index: 1;
         }
 
-        /* Noise */
         .noise {
             position: fixed;
             top: 0; left: 0;
@@ -71,7 +68,6 @@
             background-size: 128px 128px;
         }
 
-        /* Tech grid */
         .tech-grid {
             position: fixed;
             top: 0; left: 0;
@@ -86,7 +82,6 @@
             -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
         }
 
-        /* Spotlight */
         .spotlight-container {
             position: fixed;
             top: 0; left: 0;
@@ -103,7 +98,6 @@
             transition: transform 0.1s ease-out;
         }
 
-        /* White glass card */
         .key-card {
             position: relative;
             z-index: 10;
@@ -126,7 +120,6 @@
                 inset 0 1px 0 rgba(255,255,255,0.12);
         }
 
-        /* Key display box */
         .key-display {
             background: rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.08);
@@ -154,16 +147,13 @@
             border-color: rgba(0,255,196,0.4);
             background: rgba(0,255,196,0.06);
         }
-        .key-display.no-key {
-            cursor: default;
-        }
+        .key-display.no-key { cursor: default; }
         .key-display.no-key:hover::before { left: -100%; }
         .key-display.no-key:hover {
             border-color: rgba(255,255,255,0.08);
             background: rgba(0,0,0,0.3);
         }
 
-        /* Scanline */
         @keyframes scanline {
             0% { top: -2px; }
             100% { top: 100%; }
@@ -178,14 +168,12 @@
             z-index: 2;
         }
 
-        /* Pulse dot */
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; box-shadow: 0 0 6px #00ffc4; }
             50% { opacity: 0.4; box-shadow: 0 0 2px #00ffc4; }
         }
         .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
 
-        /* Loading spinner */
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -197,7 +185,6 @@
             animation: spin 0.6s linear infinite;
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 2rem;
@@ -221,14 +208,12 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Entrance */
         @keyframes cardIn {
             0% { opacity: 0; transform: translateY(24px) scale(0.96); filter: blur(12px); }
             100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
         .card-in { animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
-        /* Glow ring */
         @keyframes glowPulse {
             0%, 100% { opacity: 0.25; transform: translate(-50%, -50%) scale(1); }
             50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.05); }
@@ -244,38 +229,122 @@
             pointer-events: none;
             z-index: 9;
         }
+
+        /* ========== MUSIC BUTTON ========== */
+        .music-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 50;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .music-btn:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+        }
+        .music-btn:active { transform: scale(0.95); }
+        .music-btn.playing {
+            border-color: rgba(0,255,196,0.2);
+            box-shadow: 0 4px 20px rgba(0,255,196,0.08), 0 0 30px rgba(0,255,196,0.05);
+        }
+
+        .eq-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2.5px;
+            height: 18px;
+        }
+        .eq-bar {
+            width: 3px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.5);
+            transition: height 0.15s ease, background 0.3s ease;
+        }
+        .eq-bar.animating { animation: eqBounce 0.6s ease-in-out infinite alternate; }
+        .eq-bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+        .eq-bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+        .eq-bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+        .eq-bar:nth-child(4) { height: 15px; animation-delay: 0.1s; }
+        .eq-bar:nth-child(5) { height: 5px; animation-delay: 0.25s; }
+
+        @keyframes eqBounce {
+            0% { height: 4px; }
+            100% { height: 18px; }
+        }
+
+        .eq-bar.paused {
+            animation: none !important;
+            height: 3px !important;
+            background: rgba(255,255,255,0.25);
+        }
+
+        .music-label {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 4.5rem;
+            z-index: 50;
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 100px;
+            padding: 0.45rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            transform: translateX(8px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .music-label.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(16px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both; }
     </style>
 </head>
 <body>
 
     <!-- Video Background -->
     <div class="video-bg">
-        <video autoplay muted loop playsinline>
-            <source src="https://videotourl.com/videos/1787016473357-9c6b84e2-d7f9-431f-9794-cf7f11dd566e.mp4" type="video/mp4">
+        <video id="bgVideo" autoplay muted loop playsinline>
+            <source src="https://videotourl.com/videos/1787016473357-9c6b84e2-d7f9-431f-9794-cf7f11dd566e.mp4" type="video/mp4" />
         </video>
     </div>
 
-    <!-- Overlay -->
     <div class="video-overlay"></div>
-
-    <!-- Tech Grid -->
     <div class="tech-grid"></div>
-
-    <!-- Noise -->
     <div class="noise"></div>
 
-    <!-- Spotlight -->
     <div class="spotlight-container">
         <div class="spotlight" id="spotlight"></div>
     </div>
 
-    <!-- Glow ring -->
     <div class="glow-ring"></div>
 
     <!-- Key Card -->
     <div class="key-card card-in w-full max-w-md mx-4 p-8">
 
-        <!-- Header -->
         <div class="flex items-center gap-3 mb-6">
             <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center">
                 <iconify-icon icon="ph:key-fill" style="font-size: 16px; color: #00ffc4;"></iconify-icon>
@@ -290,13 +359,10 @@
             </div>
         </div>
 
-        <!-- Divider -->
         <div class="w-full h-px bg-gradient-to-r from-transparent via-white/12 to-transparent mb-6"></div>
 
-        <!-- Label -->
         <label class="block text-[10px] font-semibold uppercase tracking-[0.15em] text-white/35 mb-2.5 pl-1">Key</label>
 
-        <!-- Key Display -->
         <div class="key-display no-key px-5 py-4 flex items-center gap-3" id="keyBox">
             <div class="spinner flex-shrink-0" id="loadingSpinner"></div>
             <span class="font-mono text-sm text-white/30 tracking-wide flex-1 break-all leading-relaxed" id="keyText">Đang tải...</span>
@@ -305,13 +371,11 @@
             </div>
         </div>
 
-        <!-- Hint -->
         <p class="text-white/20 text-[10px] mt-3 pl-1 flex items-center gap-1.5" id="hintText">
             <iconify-icon icon="ph:info" style="font-size: 11px;"></iconify-icon>
             Đang kiểm tra key...
         </p>
 
-        <!-- Bottom info -->
         <div class="mt-6 pt-5 border-t border-white/8 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <iconify-icon icon="ph:shield-check-fill" style="font-size: 14px; color: #00ffc4;" id="shieldIcon"></iconify-icon>
@@ -319,6 +383,23 @@
             </div>
             <span class="text-[10px] text-white/20 font-mono">v2.4.1</span>
         </div>
+    </div>
+
+    <!-- Music Button -->
+    <div class="music-btn slide-up" id="musicBtn" onclick="toggleMusic()">
+        <div class="eq-bars" id="eqBars">
+            <div class="eq-bar paused"></div>
+            <div class="eq-bar paused"></div>
+            <div class="eq-bar paused"></div>
+            <div class="eq-bar paused"></div>
+            <div class="eq-bar paused"></div>
+        </div>
+    </div>
+
+    <!-- Music Label -->
+    <div class="music-label" id="musicLabel">
+        <iconify-icon icon="ph:speaker-slash" style="font-size: 13px; color: rgba(255,255,255,0.4);" id="labelIcon"></iconify-icon>
+        <span class="text-[11px] text-white/50 font-medium" id="musicLabelText">Nhấn để bật tiếng</span>
     </div>
 
     <!-- Toast -->
@@ -351,64 +432,36 @@
         let toastTimer;
         let currentKey = '';
 
-        // Lấy key từ URL
+        // Video
+        const bgVideo = document.getElementById('bgVideo');
+
+        // ========== KEY LOGIC ==========
         function getKeyFromURL() {
             const params = new URLSearchParams(window.location.search);
             return params.get('key');
         }
 
-        // Giả lập loading rồi hiện kết quả
         function init() {
             const key = getKeyFromURL();
-
             setTimeout(() => {
                 if (key && key.trim() !== '') {
                     currentKey = key.trim();
-
-                    // Ẩn spinner, hiện copy btn
                     loadingSpinner.style.display = 'none';
                     copyBtn.style.display = 'flex';
-
-                    // Hiện key
                     keyText.textContent = currentKey;
                     keyText.style.color = 'rgba(255,255,255,0.8)';
-
-                    // Bỏ class no-key, thêm onclick
                     keyBox.classList.remove('no-key');
                     keyBox.setAttribute('onclick', 'copyKey()');
-
-                    // Status → Active
-                    statusBadge.innerHTML = `
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#00ffc4] pulse-dot"></span>
-                        <span class="text-[10px] text-white/45 font-medium">Active</span>
-                    `;
-
-                    // Hint
-                    hintText.innerHTML = `
-                        <iconify-icon icon="ph:info" style="font-size: 11px;"></iconify-icon>
-                        Nhấn vào key để sao chép vào clipboard
-                    `;
-
-                    // Verify
+                    statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-[#00ffc4] pulse-dot"></span><span class="text-[10px] text-white/45 font-medium">Active</span>';
+                    hintText.innerHTML = '<iconify-icon icon="ph:info" style="font-size: 11px;"></iconify-icon> Nhấn vào key để sao chép vào clipboard';
                     verifyText.textContent = 'Verified';
                 } else {
-                    // Không có key
                     loadingSpinner.style.display = 'none';
-
                     keyText.textContent = 'Thêm ?key=YOUR_KEY vào URL';
                     keyText.style.color = 'rgba(255,255,255,0.2)';
                     keyText.style.fontSize = '12px';
-
-                    statusBadge.innerHTML = `
-                        <span class="w-1.5 h-1.5 rounded-full bg-red-400" style="box-shadow: 0 0 6px rgba(248,113,113,0.5);"></span>
-                        <span class="text-[10px] text-white/45 font-medium">No Key</span>
-                    `;
-
-                    hintText.innerHTML = `
-                        <iconify-icon icon="ph:warning" style="font-size: 11px; color: rgba(248,113,113,0.5);"></iconify-icon>
-                        <span style="color: rgba(248,113,113,0.4);">Không tìm thấy key trong URL</span>
-                    `;
-
+                    statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-400" style="box-shadow: 0 0 6px rgba(248,113,113,0.5);"></span><span class="text-[10px] text-white/45 font-medium">No Key</span>';
+                    hintText.innerHTML = '<iconify-icon icon="ph:warning" style="font-size: 11px; color: rgba(248,113,113,0.5);"></iconify-icon><span style="color: rgba(248,113,113,0.4);">Không tìm thấy key trong URL</span>';
                     shieldIcon.style.color = 'rgba(248,113,113,0.5)';
                     shieldIcon.setAttribute('icon', 'ph:shield-warning-fill');
                     verifyText.textContent = 'Invalid';
@@ -418,10 +471,7 @@
 
         function copyKey() {
             if (!currentKey) return;
-
-            navigator.clipboard.writeText(currentKey).then(() => {
-                showCopied();
-            }).catch(() => {
+            navigator.clipboard.writeText(currentKey).then(() => showCopied()).catch(() => {
                 const ta = document.createElement('textarea');
                 ta.value = currentKey;
                 ta.style.position = 'fixed';
@@ -439,7 +489,6 @@
             copyIcon.setAttribute('icon', 'ph:check');
             copyIcon.style.color = '#00ffc4';
             copyBtn.style.background = 'rgba(0,255,196,0.12)';
-
             toastIcon.setAttribute('icon', 'ph:check-circle-fill');
             toastIcon.style.color = '#00ffc4';
             toastText.textContent = 'Đã sao chép key!';
@@ -447,7 +496,6 @@
             toast.classList.add('show');
             clearTimeout(toastTimer);
             toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
-
             setTimeout(() => {
                 keyBox.classList.remove('copied', 'scanning');
                 copyIcon.setAttribute('icon', 'ph:copy');
@@ -456,19 +504,100 @@
             }, 1500);
         }
 
-        // Auto play video
-        const video = document.querySelector('.video-bg video');
-        if (video) {
-            video.play().catch(() => {
-                const playVideo = () => {
-                    video.play().catch(() => {});
-                    document.removeEventListener('click', playVideo);
-                };
-                document.addEventListener('click', playVideo);
+        // ========== MUSIC LOGIC - TỰ ĐỘNG BẬT NHẠC ==========
+        const musicBtn = document.getElementById('musicBtn');
+        const eqBars = document.querySelectorAll('.eq-bar');
+        const musicLabel = document.getElementById('musicLabel');
+        const musicLabelText = document.getElementById('musicLabelText');
+        const labelIcon = document.getElementById('labelIcon');
+        let isMuted = true;
+        let labelTimer;
+
+        // Cập nhật giao diện nút nhạc
+        function updateMusicUI(playing) {
+            if (playing) {
+                isMuted = false;
+                eqBars.forEach(bar => {
+                    bar.classList.remove('paused');
+                    bar.classList.add('animating');
+                });
+                musicBtn.classList.add('playing');
+                labelIcon.setAttribute('icon', 'ph:speaker-high');
+                musicLabelText.textContent = 'Đang phát...';
+            } else {
+                isMuted = true;
+                eqBars.forEach(bar => {
+                    bar.classList.add('paused');
+                    bar.classList.remove('animating');
+                });
+                musicBtn.classList.remove('playing');
+                labelIcon.setAttribute('icon', 'ph:speaker-slash');
+                musicLabelText.textContent = 'Nhấn để bật tiếng';
+            }
+        }
+
+        function showMusicToast(msg, icon) {
+            toastIcon.setAttribute('icon', icon);
+            toastIcon.style.color = 'rgba(255,255,255,0.6)';
+            toastText.textContent = msg;
+            toast.style.borderColor = 'rgba(255,255,255,0.15)';
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+        }
+
+        // Bật/tắt tiếng khi bấm nút
+        function toggleMusic() {
+            if (isMuted) {
+                bgVideo.muted = false;
+                bgVideo.play().then(() => {
+                    updateMusicUI(true);
+                    showMusicToast('Đã bật tiếng video', 'ph:speaker-high-fill');
+                }).catch(() => {
+                    bgVideo.muted = true;
+                    updateMusicUI(false);
+                    showMusicToast('Không thể bật tiếng', 'ph:warning-fill');
+                });
+            } else {
+                bgVideo.muted = true;
+                updateMusicUI(false);
+                showMusicToast('Đã tắt tiếng', 'ph:speaker-slash-fill');
+            }
+            musicLabel.classList.add('show');
+            clearTimeout(labelTimer);
+            labelTimer = setTimeout(() => musicLabel.classList.remove('show'), 2000);
+        }
+
+        // Tự động bật nhạc khi video đã tải xong
+        function tryEnableAudio() {
+            bgVideo.muted = false;
+            bgVideo.play().then(() => {
+                updateMusicUI(true);
+                showMusicToast('🎵 Tự động bật nhạc', 'ph:speaker-high-fill');
+            }).catch(() => {
+                bgVideo.muted = true;
+                updateMusicUI(false);
             });
         }
 
-        // Start
+        // Gắn sự kiện loadeddata để thử bật nhạc
+        bgVideo.addEventListener('loadeddata', tryEnableAudio);
+        // Nếu video đã load trước khi gắn sự kiện thì gọi luôn
+        if (bgVideo.readyState >= 1) {
+            tryEnableAudio();
+        }
+
+        // Đảm bảo video luôn chạy (dù bị chặn autoplay)
+        bgVideo.play().catch(() => {});
+
+        // Hiện label khi hover nút
+        musicBtn.addEventListener('mouseenter', () => musicLabel.classList.add('show'));
+        musicBtn.addEventListener('mouseleave', () => {
+            clearTimeout(labelTimer);
+            labelTimer = setTimeout(() => musicLabel.classList.remove('show'), 600);
+        });
+
+        // Khởi tạo key
         init();
     </script>
 </body>
